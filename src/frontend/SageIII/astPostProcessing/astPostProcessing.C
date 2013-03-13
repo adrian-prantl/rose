@@ -288,7 +288,7 @@ void postProcessingSupport (SgNode* node)
 
   // DQ (4/7/2010): This was commented out to modify Fortran code, but I think it should NOT modify Fortran code.
   // DQ (5/21/2008): This only make since for C and C++ (Error, this DOES apply to Fortran where the "parameter" attribute is used!)
-     if (SageInterface::is_Fortran_language() == false)
+     if (SageInterface::is_Fortran_language() == false && SageInterface::is_Java_language() == false)
         {
        // DQ (3/20/2005): Fixup AST so that GNU g++ compile-able code will be generated
           fixupInClassDataInitialization(node);
@@ -428,7 +428,9 @@ void postProcessingSupport (SgNode* node)
   // was found. This is only seen when compiling ROSE using ROSE and was a mysterious property of ROSE for a long 
   // time until it was identified.  This fixup traversal changes the name back to "__PRETTY_FUNCTION__" to make
   // the code generated using ROSE when compiling ROSE source code the same as if GNU processed it (e.g. using CPP).
-     fixupPrettyFunctionVariables(node);
+     if (SageInterface::is_Java_language() == false) {
+         fixupPrettyFunctionVariables(node);
+     }
 #endif
 
 #if 0
@@ -507,6 +509,9 @@ void postProcessingSupport (SgNode* node)
   // and remove the constant folded values since this represents the original code.  This mechanism
   // will provide a default when it is more fully implemented.
      resetConstantFoldedValues(node);
+
+  // DQ (10/9/2012): Fixup known macros that might expand into a recursive mess in the unparsed code.
+     fixupSelfReferentialMacrosInAST(node);
 
   // DQ (5/22/2005): Nearly all AST fixup should be done before this closing step
   // QY: check the isModified flag

@@ -2049,6 +2049,14 @@ SgVarArgOp * SageBuilder::buildVarArgOp_nfi(SgExpression *  operand_i, SgType * 
   return result;
 }
 
+SgMinusOp *SageBuilder::buildMinusOp(SgExpression* operand_i, SgUnaryOp::Sgop_mode  a_mode)
+{
+  SgMinusOp* result = buildUnaryExpression<SgMinusOp>(operand_i);
+  ROSE_ASSERT(result);
+  result->set_mode(a_mode);
+  return result;
+}
+
 SgMinusMinusOp *SageBuilder::buildMinusMinusOp(SgExpression* operand_i, SgUnaryOp::Sgop_mode  a_mode)
 {
   SgMinusMinusOp* result = buildUnaryExpression<SgMinusMinusOp>(operand_i);
@@ -2507,16 +2515,9 @@ SgSizeOfOp* SageBuilder::buildSizeOfOp_nfi(SgType* type /* = NULL*/)
 //! This is part of Java specific operator support.
 SgJavaInstanceOfOp* SageBuilder::buildJavaInstanceOfOp(SgExpression* exp, SgType* type)
    {
-  // Not sure what should be the correct type of the SgJavaInstanceOfOp expression...
-     SgType* exp_type = NULL;
+     SgType* exp_type = SgTypeBool::createType();
 
-  // I think this should evaluate to be a boolean type (typically used in conditionals).
-  // if (exp != NULL) exp_type = exp->get_type();
-
-  // Warn that this support in not finished.
-     printf ("WARNING: Support for SgJavaInstanceOfOp is incomplete, expression type not specified, should it be SgTypeBool? \n");
-
-     SgJavaInstanceOfOp* result = new SgJavaInstanceOfOp(exp,type, exp_type);
+     SgJavaInstanceOfOp* result = new SgJavaInstanceOfOp(exp, type, exp_type);
      ROSE_ASSERT(result);
      if (exp != NULL)
         {

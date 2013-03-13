@@ -242,6 +242,27 @@ smt_example_SOURCES = demos/smt_example.C
 smt_example_CPPFLAGS = $(ROSE_INCLUDES)
 smt_example_LDADD = $(BOOST_LDFLAGS) libRSIM.la $(LIBS_WITH_RPATH) $(ROSE_LIBS)
 
+#------------------------------------------------------------------------------------------------------------------------------
+# Multi-domain demo that enables/disables sub-domains and converts values from one sub-domain to another.  This is meant to
+# serve as an example for Andreas and Earl that they can modify to suit their needs.
+noinst_PROGRAMS += MultiWithConversion
+EXTRA_DIST += demos/MultiWithConversion.h demos/MultiWithConversionTpl.h demos/RobinTpl.h
+MultiWithConversion_SOURCES = demos/MultiWithConversion.C
+MultiWithConversion_CPPFLAGS = $(ROSE_INCLUDES)
+MultiWithConversion_LDADD = $(BOOST_LDFLAGS) libRSIM.la $(LIBS_WITH_RPATH) $(ROSE_LIBS)
+
+#------------------------------------------------------------------------------------------------------------------------------
+# Binary clone detection.  Finds semantically similar functions based on fuzz testing. See Andreas and Earl for details.
+noinst_PROGRAMS += CloneDetection
+EXTRA_DIST +=						\
+	clone_detection/CloneDetection.h		\
+	clone_detection/CloneDetectionSemantics.h	\
+	clone_detection/CloneDetectionTpl.h		\
+	clone_detection/CloneDetection.patch
+CloneDetection_SOURCES = clone_detection/CloneDetection.C
+CloneDetection_CPPFLAGS = $(ROSE_INCLUDES)
+CloneDetection_LDADD = $(BOOST_LDFLAGS) libRSIM.la $(LIBS_WITH_RPATH) $(ROSE_LIBS)
+
 
 ###############################################################################################################################
 #  SUPPORT PROGRAMS FOR PAPERS

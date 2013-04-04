@@ -3,7 +3,7 @@ include $(top_srcdir)/config/Makefile.for.ROSE.includes.and.libs
 bin_PROGRAMS = codethorn 
 #ast_demo matcher_demo iterator_test
 EXTRA_DIST = EqualityMaintainer.C Doxyfile $(TESTS) $(COUNTEREXAMPLES)
-BUILT_SOURCES = 
+BUILT_SOURCES = matcherparser.h
 CLEANFILES = 
 
 AM_LDFLAGS = $(ROSE_LIBS) $(LIBS_WITH_RPATH)
@@ -52,6 +52,8 @@ codethorn_SOURCES = \
   LanguageRestrictor.h             \
   Miscellaneous.C                  \
   Miscellaneous.h                  \
+  RDLattice.C	                   \
+  RDLattice.h	                   \
   RoseAst.C                        \
   RoseAst.h                        \
   SetAlgo.h                        \
@@ -97,10 +99,13 @@ ast_demo_LDADD = -lrose libmatcher.la
 lib_LTLIBRARIES = libmatcher.la
 
 libmatcher_la_SOURCES = \
-  AstMatching.C AstMatching.h matcherlexer.lxx matcherparser.yxx matcherparser_decls.h MatchOperation.C MatchOperation.h
+   matcherparser.h AstMatching.C AstMatching.h matcherlexer.lxx matcherparser.yxx matcherparser_decls.h MatchOperation.C MatchOperation.h
 
 libmatcher_la_LFLAGS = -Pmatcher
 libmatcher_la_YFLAGS = -p matcher --defines=matcherparser.h
+
+matcherparser.h: matcherparser.yxx
+	$(YACC) -p matcher --defines=matcherparser.h $(srcdir)/matcherparser.yxx
 
 REGRESSION_DATA_DIR=regressiondata
 
